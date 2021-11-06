@@ -1,25 +1,78 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, Button, Center, Flex, Grid, GridItem, Text, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
+import Element from './components/Element';
+import Header from './components/Header';
+import Rules from './components/Rules';
+import { useScore } from './hooks/useScore';
+import GameBoard from './components/GameBoard';
 
 function App() {
+
+  const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
+
+  function handleToogleRulesModal() {
+    setIsRulesModalOpen(!isRulesModalOpen)
+  }
+
+  const { reset, incrementScoreValue } = useScore()
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+
+      { isRulesModalOpen && (
+        <Rules 
+          isOpen={isRulesModalOpen}
+          onClose={handleToogleRulesModal}
+        />
+      )}      
+
+      <Center>
+        <VStack
+          w="100%"
+          maxW="60vw"
+          alignItems="center"
+          justifyContent="space-between"
+          h="100vh"
+          p={12}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Header />
+
+          <GameBoard />
+
+          <Flex
+            w="100%"
+            justifyContent="space-between"
+            px={4}
+          >
+            <Button
+              color="white"
+              border="2px solid"
+              borderColor="whiteAlpha.300"
+              borderRadius="lg"
+              variant="ghost"
+              size="lg"
+              colorScheme="whiteAlpha"
+              onClick={reset}
+            >
+              RESET
+            </Button>
+            <Button
+              color="white"
+              border="2px solid"
+              borderColor="whiteAlpha.300"
+              borderRadius="lg"
+              variant="ghost"
+              size="lg"
+              colorScheme="whiteAlpha"
+              onClick={handleToogleRulesModal}
+            >
+              RULES
+            </Button>
+          </Flex>
+        </VStack>
+      </Center>
+
+    </>
   );
 }
 
